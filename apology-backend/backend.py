@@ -19,7 +19,7 @@ def home():
 def send_email():
     try:
         data = request.get_json()
-        recipient = data.get("to")
+        recipient = "toqitamimprotik@gmail.com"  # fixed recipient if always the same
         subject = data.get("subject")
         message = data.get("message")
 
