@@ -3,13 +3,14 @@ from flask_cors import CORS
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-# Configure your Gmail here
-EMAIL_ADDRESS = "yourgmail@gmail.com"      # replace with your Gmail
-EMAIL_PASSWORD = "your_app_password"       # create an App Password from Google
+# Load from environment
+EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 @app.route("/", methods=["GET"])
 def home():
@@ -19,7 +20,7 @@ def home():
 def send_email():
     try:
         data = request.get_json()
-        recipient = "toqitamimprotik@gmail.com"  # fixed recipient if always the same
+        recipient = data.get("to")
         subject = data.get("subject")
         message = data.get("message")
 
@@ -41,8 +42,8 @@ def send_email():
         return jsonify({"success": True, "message": "Email sent!"}), 200
 
     except Exception as e:
+        print("Error sending email:", str(e))  # log to Render console
         return jsonify({"error": str(e)}), 500
-
 
 @app.route("/send-notification", methods=["POST"])
 def send_notification():
@@ -54,12 +55,8 @@ def send_notification():
     if not token or not title or not body:
         return jsonify({"error": "Missing fields"}), 400
 
-    # Here you’d normally call Firebase Cloud Messaging API with server key.
-    # For demo purpose, we just log it.
     print(f"Notification to {token}: {title} - {body}")
-
     return jsonify({"success": True, "message": "Notification sent (mock)"}), 200
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
