@@ -10,9 +10,9 @@ app = Flask(__name__)
 CORS(app)  # Allow requests from Flutter app
 
 # Email configuration
-SENDER_EMAIL = os.environ.get('SENDER_EMAIL', "toqitamimprotik@gmail.com")
-APP_PASSWORD = os.environ.get('APP_PASSWORD', "vjakoxonkqweqqqt")
-RECEIVER_EMAIL = os.environ.get('RECEIVER_EMAIL', "toqitamimprotik@gmail.com")
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL')
+APP_PASSWORD = os.environ.get('APP_PASSWORD')
+RECEIVER_EMAIL = os.environ.get('RECEIVER_EMAIL')
 
 def send_email(subject, body):
     """Send email notification"""
